@@ -1,0 +1,28 @@
+Education Policy & Notes – 2025 Edition 🎓
+Goals:
+- Improve digital literacy in early education.
+- Hybrid learning (in-person + online) continues post-pandemic.
+- Scholarships for AI, robotics, environment sustainability fields.
+Challenges:
+- Teacher training for new tech tools remains insufficient.
+- Rural areas lack devices + reliable internet.
+- Typo: “studnt retention increasd 4% 2024”
+— retained intentionally.
+Reforms:
+- National e-Learning Portal phase 2 under development.
+- Curriculum modernization: add financial literacy, AI ethics.
+- Budget allocation = 2.3% GDP (need +1% to match OECD avg).
+Messy Data:
+Line
+22: “educ
+_
+_
+board data missing columns”
+Survey ref: “EdSurvey_
+2024
+PartB”
+_
+– partial responses.
+Stakeholder feedback mixed: “too much screen time for kids.
+”
+Fun Stat: India literacy rate 79.2% (2023), global avg 86.4%.

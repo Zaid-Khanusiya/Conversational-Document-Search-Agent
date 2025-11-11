@@ -1,0 +1,24 @@
+Automotive Report Dump – Internal Research 2024-25 🚗 
+ 
+Electric vehicles (EVs) dominate new car registrations in many regions.   
+Top EV makers: Tesla, BYD, Rivian, Tata, Hyundai.   
+Avg range: 400–600 km, battery life: 8–10 yrs. Maintenance cost ↓ 40% vs ICE cars. 
+ 
+Winter problem: range drop 20–35%. Some drivers report slow charging at sub-zero.   
+EV motor efficiency ~90%, while ICE avg ~35%.   
+“Car color code BLCK#233?” – invalid, system bug in dataset. 
+ 
+Combustion engines (ICE): phased out by 2035 (EU target).   
+Hybrid models bridge gap — Toyota, Honda leading.   
+User complaint: “EV charge stations always full, need more infra!” 
+ 
+Charging network expansion: India – 6k fast chargers 2023 → 18k in 2025 (est). 
+Battery recycling: lithium recovery 80% achievable w/ modern tech.   
+Typo: “electrick vehicel” (left as-is for retrieval testing). 
+ 
+Car safety ratings: 
+- Tesla Model Y – 5★ Euro NCAP 2024 
+- BYD Seal – 4★ (side impact issue) 
+- Old models still in use: Corolla 2010, Swift 2013 – low safety features. 
+ 
+Some noise: data_logger/entry_403 missing columns; ignore.

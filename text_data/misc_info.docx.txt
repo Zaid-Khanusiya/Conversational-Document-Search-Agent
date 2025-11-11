@@ -1,0 +1,23 @@
+General Info Compilation – 2025 Draft Dump 🧠
+
+1️⃣ Random facts collection:
+- Bananas are technically berries, strawberries are not (botany rules 🤷‍♂️).
+- Earth spins at ~1670 km/h at the equator but we don’t feel it due to gravity.
+- Google started in Susan Wojcicki’s garage, Menlo Park, 1998.
+- Penguins have knees! hidden under feathers.
+- Typo version: “Environmnt awareness increasd bcoz of pandemec” (real note from intern).
+
+2️⃣ Geography and Misc Data:
+The Pacific Ocean covers more area than all landmasses combined.  
+Highest temp recorded: 56.7°C, Furnace Creek, California (1913).  
+Mount Everest height re-measured: 8848.86 m (as of 2020).  
+Some sources still show “8849m” — both acceptable.
+
+3️⃣ Random Quotes:
+- “Time is what we want most, but what we use worst.” — William Penn.
+- “Knowledge is knowing tomato is a fruit; wisdom is not putting it in fruit salad.”
+
+4️⃣ Notes for Search Test:
+- There’s a paragraph about Mars gravity (3.71 m/s² vs Earth’s 9.8 m/s²).
+- Insert junk text: abcd###123 incomplete dataset / old metrics / no labels.
+- Climate awareness survey 2023 had 8,000 participants, 61% said “want more green tech.”

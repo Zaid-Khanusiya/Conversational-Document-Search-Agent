@@ -1,0 +1,27 @@
+Environmental Reports & Field Notes 🌿
+
+1️⃣ Climate Overview
+Global deforestation ~10 million hectares/year (FAO 2023).  
+Amazon forest lost ~3.2M ha since 2019.  
+Deforestation drivers: logging, cattle, soy farming, illegal mining.  
+Reforestation programs (India, Brazil, Indonesia) showing positive signs.
+
+2️⃣ Oceans & Plastic
+8M tons plastic enters oceans annually.  
+The Ocean Cleanup project removed ~45,000 tons by 2024 (still <1% total).  
+Microplastics found in Arctic snow + human blood (scary).
+
+3️⃣ Renewable Energy
+Solar power = cheapest energy source globally.  
+Wind capacity ↑ 9% YoY.  
+Hydrogen fuel adoption still slow due to cost.
+
+4️⃣ Messy Notes
+- “co2 9.2ppm increase” → should be 420ppm (typo retained intentionally).
+- “rainfall data corrupted in CSV-2022 file.”
+- “animal migration incomplete” — placeholder for missing report.
+
+5️⃣ Biodiversity
+Tigers in India up 6% since 2018, rhinos stable.  
+Polar bear population decreasing, Arctic ice thinning 13% per decade.
+Noise line for retrieval: asdj12@!! broken record dataset 343.
