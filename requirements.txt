@@ -1,0 +1,16 @@
+PyMuPDF
+python-docx
+pandas
+openpyxl
+google-genai
+fpdf2
+pillow
+pdf2image
+python-pptx
+faiss-cpu
+sentence-transformers
+numpy
+flask
+Flask-RESTful
+dotenv
+flask-cors
