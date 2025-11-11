@@ -1,515 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Document Search Assistant</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f4f7f6;
-            margin: 0;
-            padding: 20px;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .container {
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 1000px;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        h1 {
-            text-align: center;
-            color: #000000;
-            margin-top: 0;
-            margin-bottom: 20px;
-            font-size: 240px ;
-            font-weight: 800;
-            letter-spacing: 1px;
-        }
-
-        .section-header {
-            font-size: 1.3em;
-            color: #34495e;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 5px;
-        }
-
-        .file-upload-section {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            border: 1px dashed #cccccc;
-            padding: 20px;
-            border-radius: 8px;
-            background-color: #fdfdfd;
-        }
-
-        .file-upload-controls {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        #fileInput {
-            flex-grow: 1;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            background-color: #fff;
-            cursor: pointer;
-        }
-
-        #uploadBtn {
-            padding: 10px 20px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: background-color 0.3s ease;
-        }
-
-        #uploadBtn:hover {
-            background-color: #218838;
-        }
-
-        #uploadStatus {
-            margin-top: 10px;
-            font-size: 0.95em;
-            color: #555;
-            min-height: 20px;
-        }
-
-        #fileList {
-            margin-top: 10px;
-            list-style: none;
-            padding: 0;
-            max-height: 150px;
-            overflow-y: auto;
-            border: 1px solid #eee;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
-
-        #fileList li {
-            padding: 8px 12px;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        #fileList li:last-child {
-            border-bottom: none;
-        }
-
-        #fileList li span {
-            font-weight: 500;
-        }
-
-        #fileList li .remove-file {
-            background: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 4px 8px;
-            cursor: pointer;
-            font-size: 0.8em;
-        }
-
-        #fileList li .remove-file:hover {
-            background: #c82333;
-        }
-
-        .tab-navigation {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #ecf0f1;
-        }
-
-        .tab-btn {
-            padding: 12px 25px;
-            border: none;
-            background-color: transparent;
-            cursor: pointer;
-            font-size: 1.1em;
-            font-weight: 600;
-            color: #7f8c8d;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s ease;
-            outline: none;
-        }
-
-        .tab-btn.active {
-            color: #3498db;
-            border-bottom: 3px solid #3498db;
-        }
-
-        .tab-btn:hover:not(.active) {
-            color: #555;
-            background-color: #f5f5f5;
-        }
-
-        .tab-content {
-            display: none;
-            padding-top: 20px;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .query-input-section {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            align-items: stretch;
-        }
-
-        textarea {
-            flex-grow: 1;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 1em;
-            resize: vertical;
-            min-height: 60px;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
-        }
-
-        .action-button {
-            padding: 10px 20px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: background-color 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .action-button:hover {
-            background-color: #2980b9;
-        }
-
-        .action-button:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-        }
-
-        .results-display {
-            background-color: #f9f9f9;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 20px;
-            min-height: 150px;
-            max-height: 400px;
-            overflow-y: auto;
-            line-height: 1.6;
-        }
-
-        .processing-indicator {
-            text-align: center;
-            font-style: italic;
-            color: #888;
-            margin-top: 15px;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 0.7; }
-            50% { opacity: 1; }
-            100% { opacity: 0.7; }
-        }
-
-        .document-result {
-            margin-bottom: 15px;
-            padding: 15px;
-            border: 1px solid #dcdcdc;
-            border-radius: 8px;
-            background-color: #fff;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        }
-
-        .document-result h3 {
-            margin-top: 0;
-            color: #2c3e50;
-            font-size: 1.2em;
-            margin-bottom: 5px;
-        }
-
-        .document-result p {
-            margin: 0 0 8px 0;
-            color: #555;
-            font-size: 0.95em;
-        }
-
-        .document-result p strong {
-            color: #34495e;
-            font-weight: 600;
-        }
-
-        .document-result .filename {
-            font-family: monospace;
-            background-color: #eee;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 0.85em;
-        }
-
-        .answer-mode-response {
-            word-wrap: break-word;
-            line-height: 1.6;
-        }
-
-        .answer-mode-response p {
-            margin-bottom: 1.2em;
-            color: #444;
-            font-size: 1.05em;
-        }
-
-        .answer-mode-response strong {
-            color: #007bff;
-            font-weight: 700;
-        }
-
-        .success-message { color: #28a745; }
-        .error-message { color: #dc3545; }
-    </style>
+<meta charset="UTF-8">
+<title>Document Search Assistant</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{font-family:'Inter',sans-serif;background:#f4f7f6;margin:0;padding:20px;color:#333;display:flex;flex-direction:column;align-items:center;min-height:100vh}
+.container{background:#fff;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,.1);width:90%;max-width:1000px;padding:30px;display:flex;flex-direction:column;gap:25px}
+h1{text-align:center;color:#000;margin:0 0 20px;font-size:40px;font-weight:700}
+.section-header{font-size:1.3em;color:#34495e;margin-bottom:15px;border-bottom:1px solid #eee;padding-bottom:5px}
+.file-upload-section{display:flex;flex-direction:column;gap:15px;border:1px dashed #ccc;padding:20px;border-radius:8px;background:#fdfdfd}
+.file-upload-controls{display:flex;gap:10px;align-items:center}
+#fileInput{flex-grow:1;padding:10px;border:1px solid #ccc;border-radius:6px;background:#fff;cursor:pointer}
+#uploadBtn{padding:10px 20px;background:#28a745;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:1em;transition:.3s}
+#uploadBtn:hover{background:#218838}
+#uploadStatus{margin-top:10px;font-size:.95em;color:#555;min-height:20px}
+#fileList{margin-top:10px;list-style:none;padding:0;max-height:150px;overflow-y:auto;border:1px solid #eee;border-radius:5px;background:#f9f9f9}
+#fileList li{padding:8px 12px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center}
+#fileList li:last-child{border-bottom:none}
+.remove-file{background:#dc3545;color:#fff;border:none;border-radius:4px;padding:4px 8px;cursor:pointer;font-size:.8em}
+.remove-file:hover{background:#c82333}
+.tab-navigation{display:flex;justify-content:center;margin-bottom:20px;border-bottom:2px solid #ecf0f1}
+.tab-btn{padding:12px 25px;border:none;background:0;cursor:pointer;font-size:1.1em;font-weight:600;color:#7f8c8d;border-bottom:3px solid transparent;transition:.3s}
+.tab-btn.active{color:#3498db;border-bottom-color:#3498db}
+.tab-btn:hover:not(.active){color:#555;background:#f5f5f5}
+.tab-content{display:none;padding-top:20px}
+.tab-content.active{display:block}
+.query-input-section{display:flex;gap:10px;margin-bottom:20px;align-items:stretch}
+textarea{flex-grow:1;padding:12px;border:1px solid #ccc;border-radius:6px;font-size:1em;resize:vertical;min-height:60px;box-shadow:inset 0 1px 3px rgba(0,0,0,.05)}
+.action-button{padding:10px 20px;background:#3498db;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:1em;transition:.3s;white-space:nowrap}
+.action-button:hover{background:#2980b9}
+.action-button:disabled{background:#ccc;cursor:not-allowed}
+.results-display{background:#f9f9f9;border:1px solid #e0e0e0;border-radius:8px;padding:20px;min-height:150px;max-height:400px;overflow-y:auto;line-height:1.6}
+.processing-indicator{text-align:center;font-style:italic;color:#888;margin-top:15px;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:.7}50%{opacity:1}}
+.document-result{margin-bottom:15px;padding:15px;border:1px solid #dcdcdc;border-radius:8px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.document-result h3{margin:0 0 5px;color:#2c3e50;font-size:1.2em}
+.document-result p{margin:0 0 8px;color:#555;font-size:.95em}
+.filename{font-family:monospace;background:#eee;padding:2px 6px;border-radius:4px;font-size:.85em}
+.answer-mode-response{word-wrap:break-word;line-height:1.6}
+.answer-mode-response p{margin-bottom:1.2em;color:#444;font-size:1.05em}
+.answer-mode-response strong{color:#007bff;font-weight:700}
+.success-message{color:#28a745}.error-message{color:#dc3545}
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1 style="font-size: 40px; font-weight: 700;" >Document Search Assistant</h1>
-
-        <div class="file-upload-wrapper">
-            <h2 class="section-header">Upload Documents</h2>
-            <div class="file-upload-section">
-                <div class="file-upload-controls">
-                    <input type="file" id="fileInput" multiple accept=".pdf,.docx,.xlsx,.xls,.csv,.txt,.jpg,.jpeg,.png,.webp,.ppt,.pptx,.mp3,.wav">
-                    <button id="uploadBtn">Upload</button>
-                </div>
-                <div id="uploadStatus"></div>
-                <ul id="fileList"></ul>
-            </div>
-        </div>
-
-        <div class="tab-navigation">
-            <button id="searchQueryTabBtn" class="tab-btn active">Search Query Mode</button>
-            <button id="answerModeTabBtn" class="tab-btn">Answer Mode</button>
-        </div>
-
-        <div id="searchQueryTabContent" class="tab-content active">
-            <h2 class="section-header">Search Query</h2>
-            <div class="query-input-section">
-                <textarea id="searchQueryInput" placeholder="Enter your search query..."></textarea>
-                <button id="executeSearchQueryBtn" class="action-button">Search</button>
-            </div>
-            <div class="results-display" id="searchQueryResults">
-                <p>Results will appear here.</p>
-            </div>
-        </div>
-
-        <div id="answerModeTabContent" class="tab-content">
-            <h2 class="section-header">Answer Mode</h2>
-            <div class="query-input-section">
-                <textarea id="answerModeInput" placeholder="Ask a question..."></textarea>
-                <button id="executeAnswerModeBtn" class="action-button">Get Answer</button>
-            </div>
-            <div class="results-display" id="answerModeResults">
-                <p>Answers will appear here.</p>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const API_BASE_URL = '';
-        const fileInput = document.getElementById('fileInput');
-        fileInput.addEventListener('change', (e) => {
-    selectedFiles = Array.from(e.target.files);
-    renderSelectedFiles();
-});
-
-        const uploadBtn = document.getElementById('uploadBtn');
-        const uploadStatus = document.getElementById('uploadStatus');
-        const fileList = document.getElementById('fileList');
-        const searchQueryTabBtn = document.getElementById('searchQueryTabBtn');
-        const answerModeTabBtn = document.getElementById('answerModeTabBtn');
-        const searchQueryTabContent = document.getElementById('searchQueryTabContent');
-        const answerModeTabContent = document.getElementById('answerModeTabContent');
-        const searchQueryInput = document.getElementById('searchQueryInput');
-        const executeSearchQueryBtn = document.getElementById('executeSearchQueryBtn');
-        const searchQueryResults = document.getElementById('searchQueryResults');
-        const answerModeInput = document.getElementById('answerModeInput');
-        const executeAnswerModeBtn = document.getElementById('executeAnswerModeBtn');
-        const answerModeResults = document.getElementById('answerModeResults');
-        let selectedFiles = [];
-
-        function markdownToHtml(text) {
-            if (!text) return '';
-            let html = text.trim()
-                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                .split(/\n\n+/)
-                .map(p => `<p>${p}</p>`)
-                .join('');
-            return html;
-        }
-
-        function renderSelectedFiles() {
-            fileList.innerHTML = '';
-            if (selectedFiles.length === 0) {
-                fileList.innerHTML = '<li>No files selected.</li>';
-                return;
-            }
-            selectedFiles.forEach((file, index) => {
-                const li = document.createElement('li');
-                li.innerHTML = `<span>${file.name}</span> <button class="remove-file" data-index="${index}">Remove</button>`;
-                fileList.appendChild(li);
-            });
-            document.querySelectorAll('.remove-file').forEach(btn => {
-                btn.addEventListener('click', e => {
-                    const idx = parseInt(e.target.dataset.index);
-                    selectedFiles.splice(idx, 1);
-                    renderSelectedFiles();
-                    if (selectedFiles.length === 0) fileInput.value = '';
-                });
-            });
-        }
-
-        uploadBtn.addEventListener('click', async () => {
-            if (selectedFiles.length === 0) {
-                uploadStatus.className = 'error-message';
-                uploadStatus.textContent = 'Please select files to upload.';
-                return;
-            }
-            uploadStatus.textContent = 'Uploading...';
-            uploadBtn.disabled = true;
-            const formData = new FormData();
-            selectedFiles.forEach(f => formData.append('files', f));
-            try {
-                const res = await fetch(`${API_BASE_URL}/upload-files`, { method: 'POST', body: formData });
-                const data = await res.json();
-                uploadStatus.className = 'success-message';
-                uploadStatus.textContent = data.msg;
-                selectedFiles = [];
-                fileInput.value = '';
-                renderSelectedFiles();
-            } catch (err) {
-                uploadStatus.className = 'error-message';
-                uploadStatus.textContent = `Upload failed: ${err.message}`;
-            } finally {
-                uploadBtn.disabled = false;
-            }
-        });
-
-        renderSelectedFiles();
-
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            if (tab === 'searchQuery') {
-                searchQueryTabBtn.classList.add('active');
-                searchQueryTabContent.classList.add('active');
-            } else {
-                answerModeTabBtn.classList.add('active');
-                answerModeTabContent.classList.add('active');
-            }
-        }
-
-        searchQueryTabBtn.addEventListener('click', () => switchTab('searchQuery'));
-        answerModeTabBtn.addEventListener('click', () => switchTab('answerMode'));
-        // Allow Enter to trigger Search Query
-searchQueryInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        executeSearchQueryBtn.click();
-    }
-});
-
-// Allow Enter to trigger Answer Mode
-answerModeInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        executeAnswerModeBtn.click();
-    }
-});
-
-
-        executeSearchQueryBtn.addEventListener('click', async () => {
-            const q = searchQueryInput.value.trim();
-            if (!q) {
-                searchQueryResults.innerHTML = '<p class="error-message">Please enter a search query.</p>';
-                return;
-            }
-            searchQueryResults.innerHTML = '<p class="processing-indicator">Searching...</p>';
-            executeSearchQueryBtn.disabled = true;
-            try {
-                const res = await fetch(`${API_BASE_URL}/search-query`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ query: q }),
-                });
-                const t = await res.text();
-                let d;
-                try { d = JSON.parse(t); }
-                catch { searchQueryResults.innerHTML = `<p>${t}</p>`; return; }
-                if (Array.isArray(d) && d.length)
-                    searchQueryResults.innerHTML = d.map(doc => `
-                        <div class="document-result">
-                            <h3>${doc.Title || 'No Title'}</h3>
-                            <p><strong>File:</strong> <span class="filename">${doc.FileName || 'N/A'}</span></p>
-                            <p><strong>Excerpt:</strong> ${doc.Excerpt || ''}</p>
-                            <p><strong>Explanation:</strong> ${doc.Explanation || ''}</p>
-                        </div>`).join('');
-                else searchQueryResults.innerHTML = '<p>No relevant info found.</p>';
-            } catch (e) {
-                searchQueryResults.innerHTML = `<p class="error-message">Search failed: ${e.message}</p>`;
-            } finally { executeSearchQueryBtn.disabled = false; }
-        });
-
-        executeAnswerModeBtn.addEventListener('click', async () => {
-            const q = answerModeInput.value.trim();
-            if (!q) {
-                answerModeResults.innerHTML = '<p class="error-message">Please enter a question.</p>';
-                return;
-            }
-            answerModeResults.innerHTML = '<p class="processing-indicator">Generating answer...</p>';
-            executeAnswerModeBtn.disabled = true;
-            try {
-                const res = await fetch(`${API_BASE_URL}/search-query-answer`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ query: q }),
-                });
-                const raw = await res.text();
-
-                // ✅ Added this cleaning block
-                const cleanedText = raw
-                    .replace(/\\"/g, '"')
-                    .replace(/\\n/g, '\n')
-                    .replace(/\\r/g, '');
-
-                const html = markdownToHtml(cleanedText);
-                answerModeResults.innerHTML = `<div class="answer-mode-response">${html}</div>`;
-            } catch (e) {
-                answerModeResults.innerHTML = `<p class="error-message">Failed to get answer: ${e.message}</p>`;
-            } finally { executeAnswerModeBtn.disabled = false; }
-        });
-    </script>
+<div class="container">
+<h1>Document Search Assistant</h1>
+<div><h2 class="section-header">Upload Documents</h2>
+<div class="file-upload-section">
+<div class="file-upload-controls"><input type="file" id="fileInput" multiple accept=".pdf,.docx,.xlsx,.xls,.csv,.txt,.jpg,.jpeg,.png,.webp,.ppt,.pptx,.mp3,.wav"><button id="uploadBtn">Upload</button></div>
+<div id="uploadStatus"></div><ul id="fileList"></ul></div></div>
+<div class="tab-navigation"><button id="searchQueryTabBtn" class="tab-btn active">Search Query Mode</button><button id="answerModeTabBtn" class="tab-btn">Answer Mode</button></div>
+<div id="searchQueryTabContent" class="tab-content active">
+<h2 class="section-header">Search Query</h2>
+<div class="query-input-section"><textarea id="searchQueryInput" placeholder="Enter your search query..."></textarea><button id="executeSearchQueryBtn" class="action-button">Search</button></div>
+<div class="results-display" id="searchQueryResults"><p>Results will appear here.</p></div></div>
+<div id="answerModeTabContent" class="tab-content">
+<h2 class="section-header">Answer Mode</h2>
+<div class="query-input-section"><textarea id="answerModeInput" placeholder="Ask a question..."></textarea><button id="executeAnswerModeBtn" class="action-button">Get Answer</button></div>
+<div class="results-display" id="answerModeResults"><p>Answers will appear here.</p></div></div></div>
+<script>
+const $=id=>document.getElementById(id),API_BASE_URL='',fI=$('fileInput'),uB=$('uploadBtn'),uS=$('uploadStatus'),fL=$('fileList'),
+sQBtn=$('searchQueryTabBtn'),aMB=$('answerModeTabBtn'),sQC=$('searchQueryTabContent'),aMC=$('answerModeTabContent'),
+sQI=$('searchQueryInput'),eSQB=$('executeSearchQueryBtn'),sQR=$('searchQueryResults'),
+aMI=$('answerModeInput'),eAMB=$('executeAnswerModeBtn'),aMR=$('answerModeResults');
+let files=[];
+const mdToHtml=t=>t?t.trim().replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').split(/\n\n+/).map(p=>`<p>${p}</p>`).join(''):'';
+function renderFiles(){fL.innerHTML=files.length?files.map((f,i)=>`<li><span>${f.name}</span><button class="remove-file" data-i=${i}>Remove</button></li>`).join(''):'<li>No files selected.</li>';document.querySelectorAll('.remove-file').forEach(b=>b.onclick=e=>{files.splice(e.target.dataset.i,1);if(!files.length)fI.value='';renderFiles()})}
+fI.onchange=e=>{files=[...e.target.files];renderFiles()};
+uB.onclick=async()=>{if(!files.length)return uS.className='error-message',uS.textContent='Please select files to upload.';uS.textContent='Uploading...';uB.disabled=1;const fd=new FormData();files.forEach(f=>fd.append('files',f));try{const r=await fetch(`${API_BASE_URL}/upload-files`,{method:'POST',body:fd});const d=await r.json();uS.className='success-message';uS.textContent=d.msg;files=[];fI.value='';renderFiles()}catch(e){uS.className='error-message';uS.textContent='Upload failed: '+e.message}finally{uB.disabled=0}}
+function switchTab(t){[sQBtn,aMB].forEach(b=>b.classList.remove('active'));[sQC,aMC].forEach(c=>c.classList.remove('active'));(t==='search'?[sQBtn,sQC]:[aMB,aMC]).forEach(x=>x.classList.add('active'))}
+sQBtn.onclick=()=>switchTab('search');aMB.onclick=()=>switchTab('answer');
+const runSearch=async()=>{const q=sQI.value.trim();if(!q)return sQR.innerHTML='<p class="error-message">Please enter a search query.</p>';sQR.innerHTML='<p class="processing-indicator">Searching...</p>';eSQB.disabled=1;try{const r=await fetch(`${API_BASE_URL}/search-query`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:q})});const t=await r.text();let d;try{d=JSON.parse(t)}catch{return sQR.innerHTML=`<p>${t}</p>`}sQR.innerHTML=d?.length?d.map(x=>`<div class="document-result"><h3>${x.Title||'No Title'}</h3><p><strong>File:</strong><span class="filename">${x.FileName||'N/A'}</span></p><p><strong>Excerpt:</strong>${x.Excerpt||''}</p><p><strong>Explanation:</strong>${x.Explanation||''}</p></div>`).join(''):'<p>No relevant info found.</p>'}catch(e){sQR.innerHTML=`<p class="error-message">Search failed: ${e.message}</p>`}finally{eSQB.disabled=0}}
+const runAnswer=async()=>{const q=aMI.value.trim();if(!q)return aMR.innerHTML='<p class="error-message">Please enter a question.</p>';aMR.innerHTML='<p class="processing-indicator">Generating answer...</p>';eAMB.disabled=1;try{const r=await fetch(`${API_BASE_URL}/search-query-answer`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:q})});const raw=await r.text(),clean=raw.replace(/\\"/g,'"').replace(/\\n/g,'\n').replace(/\\r/g,'');aMR.innerHTML=`<div class="answer-mode-response">${mdToHtml(clean)}</div>`}catch(e){aMR.innerHTML=`<p class="error-message">Failed: ${e.message}</p>`}finally{eAMB.disabled=0}}
+eSQB.onclick=runSearch;eAMB.onclick=runAnswer;
+[sQI,aMI].forEach((t,i)=>t.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();(i?eAMB:eSQB).click()}}))
+renderFiles();
+</script>
 </body>
 </html>
