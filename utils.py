@@ -64,7 +64,7 @@ def extract_text(file_path):
         text = df.to_string(index=False)
     
     elif file_path.endswith(".txt"):
-        with open(file_path, "r", encoding="utf-8") as f:
+        with open(file_path, "r") as f:
             text = f.read()
     
     elif file_path.endswith((".jpg",".jpeg",".png",".webp")):
@@ -116,11 +116,6 @@ def get_top_filenames(query):
 
     return top_files_list
 
-# def get_text_from_files():
-#     response = get_text()
-#     if response == True:
-#         return True
-#     return False
 
 def sync_embeddings():
     text_data_folder = "./text_data"
@@ -133,7 +128,7 @@ def sync_embeddings():
     
     text_data = []
     for text_filename in os.listdir(text_data_folder):
-        with open(f"./text_data/{text_filename}",'r') as f:
+        with open(f"./text_data/{text_filename}",'r', encoding='utf-8', errors='ignore') as f:
             text_data.append(f.read())
     
     embeddings = sentence_transformer_model.encode(text_data, show_progress_bar=True)
